@@ -1,0 +1,38 @@
+19:40:58 **** Build of configuration Debug for project Lab2A ****
+make all 
+'Building file: ../src/main.c'
+'Invoking: MicroBlaze gcc compiler'
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -I../../Lab2A_bsp/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mcpu=v11.0 -mno-xl-soft-mul -Wl,--no-relax -ffunction-sections -fdata-sections -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+In file included from ../src/main.c:6:
+../../Lab2A_bsp/microblaze_0/include/xbasic_types.h:120:2: warning: #warning The xbasics_type.h file is deprecated and users should use xil_types.h and xil_assert. [-Wcpp]
+ #warning  The xbasics_type.h file is deprecated and users should use xil_types.h and xil_assert.
+  ^~~~~~~
+../../Lab2A_bsp/microblaze_0/include/xbasic_types.h:121:2: warning: #warning Please refer the Standalone BSP UG647 for further details [-Wcpp]
+ #warning  Please refer the Standalone BSP UG647 for further details
+  ^~~~~~~
+'Finished building: ../src/main.c'
+' '
+'Building file: ../src/platform.c'
+'Invoking: MicroBlaze gcc compiler'
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/platform.o" -I../../Lab2A_bsp/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mcpu=v11.0 -mno-xl-soft-mul -Wl,--no-relax -ffunction-sections -fdata-sections -MMD -MP -MF"src/platform.d" -MT"src/platform.o" -o "src/platform.o" "../src/platform.c"
+'Finished building: ../src/platform.c'
+' '
+'Building file: ../src/sevenSeg_new.c'
+'Invoking: MicroBlaze gcc compiler'
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/sevenSeg_new.o" -I../../Lab2A_bsp/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mcpu=v11.0 -mno-xl-soft-mul -Wl,--no-relax -ffunction-sections -fdata-sections -MMD -MP -MF"src/sevenSeg_new.d" -MT"src/sevenSeg_new.o" -o "src/sevenSeg_new.o" "../src/sevenSeg_new.c"
+'Finished building: ../src/sevenSeg_new.c'
+' '
+'Building target: Lab2A.elf'
+'Invoking: MicroBlaze gcc linker'
+mb-gcc -Wl,-T -Wl,../src/lscript.ld -L../../Lab2A_bsp/microblaze_0/lib -mlittle-endian -mxl-barrel-shift -mcpu=v11.0 -mno-xl-soft-mul -Wl,--no-relax -Wl,--gc-sections -o "Lab2A.elf"  ./src/main.o ./src/platform.o ./src/sevenSeg_new.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: Lab2A.elf'
+' '
+'Invoking: MicroBlaze Print Size'
+mb-size Lab2A.elf  |tee "Lab2A.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+  13788	    836	   8496	  23120	   5a50	Lab2A.elf
+'Finished building: Lab2A.elf.size'
+' '
+
+19:41:00 Build Finished (took 2s.338ms)
+

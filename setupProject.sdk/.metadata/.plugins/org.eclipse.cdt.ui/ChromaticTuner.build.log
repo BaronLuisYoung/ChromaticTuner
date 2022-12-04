@@ -1,0 +1,21 @@
+23:45:40 **** Incremental Build of configuration Debug for project ChromaticTuner ****
+make all 
+'Building file: ../src/note.c'
+'Invoking: MicroBlaze gcc compiler'
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/note.o" -I../../ChromaticTuner_bsp/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mno-xl-soft-div -mcpu=v11.0 -mno-xl-soft-mul -mhard-float -mxl-float-convert -mxl-float-sqrt -Wl,--no-relax -ffunction-sections -fdata-sections -MMD -MP -MF"src/note.d" -MT"src/note.o" -o "src/note.o" "../src/note.c"
+'Finished building: ../src/note.c'
+' '
+'Building target: ChromaticTuner.elf'
+'Invoking: MicroBlaze gcc linker'
+mb-gcc -Wl,-T -Wl,../src/lscript.ld -L../../ChromaticTuner_bsp/microblaze_0/lib -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mno-xl-soft-div -mcpu=v11.0 -mno-xl-soft-mul -mhard-float -mxl-float-convert -mxl-float-sqrt -Wl,--no-relax -Wl,--gc-sections -o "ChromaticTuner.elf"  ./src/bsp.o ./src/complex.o ./src/fft.o ./src/fonts.o ./src/lab2a.o ./src/lcd.o ./src/main.o ./src/note.o ./src/qepn.o ./src/qfn.o ./src/qfn_init.o ./src/stream_grabber.o ./src/trig.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: ChromaticTuner.elf'
+' '
+'Invoking: MicroBlaze Print Size'
+mb-size ChromaticTuner.elf  |tee "ChromaticTuner.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+  81608	   5144	  19000	 105752	  19d18	ChromaticTuner.elf
+'Finished building: ChromaticTuner.elf.size'
+' '
+
+23:45:41 Build Finished (took 917ms)
+
