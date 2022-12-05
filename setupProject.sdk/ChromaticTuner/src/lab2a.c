@@ -25,7 +25,7 @@ static QState tune(tuner *me);
 static QState octave(tuner *me);
 static QState waiting(tuner *me); // waits 2s for inactivity
 static QState clear(tuner *me); // clears things after 2s
-
+static QState histogram(tuner *me);
 /**********************************************************************/
 
 tuner AO_tuner;
@@ -142,6 +142,10 @@ QState main_menu(tuner *me) {
 	case BUTTON3:
 	{
 		return Q_TRAN(&octave);
+	}
+	case BUTTON5:
+	{
+		return Q_TRAN(&histogram);
 	}
 
 	}
@@ -306,4 +310,29 @@ QState clear(tuner *me) {
 	return Q_SUPER(&on);
 }
 
+QState histogram(tuner *me) {
+	switch (Q_SIG(me)) {
 
+	case Q_ENTRY_SIG:
+	{
+		me->state = 4;
+		xil_printf("enter - histogram\r\n");
+		return Q_HANDLED();
+	}
+	case Q_EXIT_SIG:
+	{
+		return Q_HANDLED();
+	}
+	case TICK_SIG:
+	{
+		return Q_HANDLED();
+	}
+	case ENCODER_CLICK:
+	{
+		return Q_TRAN(&main_menu);
+	}
+
+	}
+	return Q_SUPER(&on);
+}
+//export array from fft

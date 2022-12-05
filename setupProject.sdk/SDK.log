@@ -28692,3 +28692,37 @@ con
 ----------------End of Script----------------
 
 23:43:23 INFO  : Launch script is exported to file 'C:\Users\baron\setupProject\setupProject.sdk\.sdk\launch_scripts\xilinx_c-c++_application_(system_debugger)\system_debugger_using_debug_chromatictuner.elf_on_local.tcl'
+23:45:42 INFO  : Disconnected from the channel tcfchan#213.
+23:45:43 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+23:45:43 INFO  : Jtag cable 'Digilent Nexys A7 -100T 210292B62127A' is selected.
+23:45:43 INFO  : 'jtag frequency' command is executed.
+23:45:43 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Nexys A7 -100T 210292B62127A" && level==0} -index 0' command is executed.
+23:45:45 INFO  : FPGA configured successfully with bitstream "C:/Users/baron/setupProject/setupProject.sdk/system_wrapper_hw_platform_0/download.bit"
+23:45:45 INFO  : 'configparams mdm-detect-bscan-mask 2' command is executed.
+23:45:45 INFO  : Context for processor 'microblaze_0' is selected.
+23:45:45 INFO  : System reset is completed.
+23:45:48 INFO  : 'after 3000' command is executed.
+23:45:48 INFO  : Context for processor 'microblaze_0' is selected.
+23:45:49 INFO  : The application 'C:/Users/baron/setupProject/setupProject.sdk/ChromaticTuner/Debug/ChromaticTuner.elf' is downloaded to processor 'microblaze_0'.
+23:45:49 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -filter {jtag_cable_name =~ "Digilent Nexys A7 -100T 210292B62127A" && level==0} -index 0
+fpga -file C:/Users/baron/setupProject/setupProject.sdk/system_wrapper_hw_platform_0/download.bit
+configparams mdm-detect-bscan-mask 2
+targets -set -nocase -filter {name =~ "microblaze*#0" && bscan=="USER2"  && jtag_cable_name =~ "Digilent Nexys A7 -100T 210292B62127A"} -index 0
+rst -system
+after 3000
+targets -set -nocase -filter {name =~ "microblaze*#0" && bscan=="USER2"  && jtag_cable_name =~ "Digilent Nexys A7 -100T 210292B62127A"} -index 0
+dow C:/Users/baron/setupProject/setupProject.sdk/ChromaticTuner/Debug/ChromaticTuner.elf
+----------------End of Script----------------
+
+23:45:49 INFO  : Memory regions updated for context PA
+23:45:49 INFO  : Memory regions updated for context PA
+23:45:49 INFO  : Context for processor 'microblaze_0' is selected.
+23:45:49 INFO  : 'con' command is executed.
+23:45:49 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "microblaze*#0" && bscan=="USER2"  && jtag_cable_name =~ "Digilent Nexys A7 -100T 210292B62127A"} -index 0
+con
+----------------End of Script----------------
+
+23:45:49 INFO  : Launch script is exported to file 'C:\Users\baron\setupProject\setupProject.sdk\.sdk\launch_scripts\xilinx_c-c++_application_(system_debugger)\system_debugger_using_debug_chromatictuner.elf_on_local.tcl'

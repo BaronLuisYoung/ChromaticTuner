@@ -200,10 +200,12 @@ void QF_onIdle(void) { /* entered with interrupts locked */
 	int l;
     for (l=0;l<SAMPLES;l++) {w[l]=0;} // clears previous samples
     AO_tuner.freq = fft(q,w,SAMPLES,M,sample_f);
-    //xil_printf("frequency: %d Hz\r\n", (int)(AO_tuner.freq+.5));
-	//xil_printf("%d,", prev_event_time);
+    //xil_printf("frequency: %d\r\nnearest: %d\r\n", (int)(AO_tuner.freq+.5), );
 
-    if((AO_tuner.state == 2)||(AO_tuner.state == 3))
+
+    setTuning(AO_tuner.a4_frequency + 400);
+
+    if((AO_tuner.state == 2)||(AO_tuner.state == 3)) //if in ocatve or in tune
     {
     	if(AO_tuner.freq != 0)
     	{
@@ -212,7 +214,11 @@ void QF_onIdle(void) { /* entered with interrupts locked */
     }
     else
     {
-    	printShape(100, 120, 56, 16, &triangle);
+    	printShape(100, 120, 56, 16, &triangle); //clears screen
+    }
+    if(AO_tuner.state == 4)//if in histogram
+    {
+
     }
 }
 
