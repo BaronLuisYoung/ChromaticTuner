@@ -36,7 +36,7 @@ extern struct Lab2ATag AO_tuner;
 void ctor(void);
 void GpioHandler(void *CallbackRef);
 void TwistHandler(void *CallbackRef);
-
+int returnOne();
 void timer_interrupt_handler();
 
 #endif  

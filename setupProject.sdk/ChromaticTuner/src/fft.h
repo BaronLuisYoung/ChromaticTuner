@@ -26,7 +26,11 @@ Returns
 #define FFT_H
 
 #define PI 3.141592//65358979323846
-
-float fft(float* q, float* w, int n, int m, float sample_f);
+float new_[512];
+float screenValues[64];
+int runOnce;
+int fetchNew;
+float max;
+int fft(float* q, float* w, int n, int m, float sample_f);
 
 #endif

@@ -2,7 +2,6 @@
  * bsp.c for Lab2A of ECE 153a at UCSB
  * Date of the Last Update:  October 27,2019
  *****************************************************************************/
-
 /**/
 #include "qpn_port.h"
 #include "bsp.h"
@@ -58,23 +57,30 @@ void gpio_handler(void);
 #define M 9 //2^m=samples
 #define CLOCK 100000000.0 //clock speed
 
-int int_buffer[SAMPLES];
+int int_buffer[2048];
 static float q[SAMPLES];
 static float w[SAMPLES];
 float sample_f = 100*1000*1000/2048.0;
 
+//float screenValues[64];// holds previously printed values to the screen
 void read_fsl_values(float* q, int n) {
    int i;
    unsigned int x;
    stream_grabber_start();
-   stream_grabber_wait_enough_samples(512);
+   stream_grabber_wait_enough_samples(2048);
 
-   for(i = 0; i < n; i++) {
-      int_buffer[i] = stream_grabber_read_sample(i);
-      // xil_printf("%d\n",int_buffer[i]);
-      x = int_buffer[i];
-      q[i] = 3.3*x/67108864.0; // 3.3V and 2^26 bit precision.
+   for(i = 0; i < 2048; i++) {
+         int_buffer[i] = stream_grabber_read_sample(i)>>20;
+         //int_buffer[i]>>26;
+         //q[i] = 3.3*x/67108864.0; // 3.3V and 2^26 bit precision.
+      }
+   //xil_printf("%d\r\n", int_buffer[750]);
+   int idx = 0;
+   for(i = 0; i < 2048; i += 4)
+   {
+	   q[idx++] = int_buffer[i] + int_buffer[i + 1] + int_buffer[i + 2] + int_buffer[i + 3];
    }
+
 }
 //.................................................//
 
@@ -195,16 +201,13 @@ void QF_onStartup(void) { /* entered with interrupts locked */
 }
 
 void QF_onIdle(void) { /* entered with interrupts locked */
-	QF_INT_UNLOCK();/* unlock interrupts */
+	QF_INT_UNLOCK(); /* unlock interrupts */
+
 	read_fsl_values(q, SAMPLES);
 	int l;
     for (l=0;l<SAMPLES;l++) {w[l]=0;} // clears previous samples
-    AO_tuner.freq = fft(q,w,SAMPLES,M,sample_f);
-    //xil_printf("frequency: %d\r\nnearest: %d\r\n", (int)(AO_tuner.freq+.5), );
-
-
+    AO_tuner.freq = fft(q, w, SAMPLES, M, sample_f);
     setTuning(AO_tuner.a4_frequency + 400);
-
     if((AO_tuner.state == 2)||(AO_tuner.state == 3)) //if in ocatve or in tune
     {
     	if(AO_tuner.freq != 0)
@@ -216,8 +219,10 @@ void QF_onIdle(void) { /* entered with interrupts locked */
     {
     	printShape(100, 120, 56, 16, &triangle); //clears screen
     }
+
     if(AO_tuner.state == 4)//if in histogram
     {
+
 
     }
 }
@@ -385,8 +390,8 @@ void timer_interrupt_handler() {
 }
 
 void display_timer_interrupt_handler() {
+	if(AO_tuner.state != 4)
 	QActive_postISR((QActive*) (&AO_tuner), TICK_SIG);
-	//XGpio_DiscreteWrite(&led_gpio, 1, 0b1);
 	Xuint32 ControlStatusReg;
 	ControlStatusReg =
 	XTimerCtr_ReadReg(display_tmrctr.BaseAddress, 0, XTC_TCSR_OFFSET);

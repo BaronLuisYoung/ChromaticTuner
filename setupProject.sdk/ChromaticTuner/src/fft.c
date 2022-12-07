@@ -3,10 +3,9 @@
 #include "trig.h"
 #include "xil_printf.h"
 
-static float new_[512];
-static float new_im[512];
 
-float fft(float* q, float* w, int n, int m, float sample_f) {
+static float new_im[512];
+int fft(float* q, float* w, int n, int m, float sample_f) {
 	int a,b,bi,r,d,e,c;
 	int k,place;
 	a=n/2;
@@ -14,6 +13,7 @@ float fft(float* q, float* w, int n, int m, float sample_f) {
 	int i,j;
 	float real=0,imagine=0;
 	float max,frequency;
+
 
 	// ORdering algorithm
 	for(i=0; i<(m-1); i++){
@@ -81,11 +81,13 @@ float fft(float* q, float* w, int n, int m, float sample_f) {
 	place=1;
 	for(i=1;i<(n/2);i++) { 
 		new_[i]=q[i]*q[i]+w[i]*w[i];
+		//xil_printf("%d \r\n", (int)new_[i]);
 		if(max < new_[i]) {
 			max=new_[i];
 			place=i;
 		}
 	}
+
 	
 	float s=sample_f/n; //spacing of bins
 	
@@ -108,5 +110,5 @@ float fft(float* q, float* w, int n, int m, float sample_f) {
 		frequency=frequency+(x0-1)*s;
 	}
 	
-	return frequency;
+	return (int)frequency>>2;
 }

@@ -16,7 +16,7 @@ void ISR_gpio(void);
 void ISR_timer(void);
 
 void log_queue();
-
+extern int runOnce;
 
 #define BSP_showState(prio_, state_) ((void)0)
 

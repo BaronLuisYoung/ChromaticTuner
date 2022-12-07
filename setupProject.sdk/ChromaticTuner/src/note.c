@@ -25,12 +25,21 @@ void setTuning(int a4)
 	note_freq[11] = a2 * 1.12246204831; // b2 = a2 * 2^(2/12)
 }
 
+int getNote(double f)
+{
+    int midiNote = (12*(log10(f/440.0)/0.30102999566) + 57) + 0.5;
+    return midiNote%12;
+}
+
 //finds and prints note of frequency and deviation from note
 void findNote(float f) {
-	float c=261.63;
-	float r;
+	if(!((f>=note_freq[0]*4) && (f<=note_freq[11]*128))) // not btwn c2 && b7
+	{
+		return;
+	}
+	int note = getNote(f);
+	float c=(int)note_freq[0]<<2;
 	int oct=4;
-	int note=0;
 	//determine which octave frequency is in
 	if(f >= c) {
 		while(f > c*2) {
@@ -42,50 +51,22 @@ void findNote(float f) {
 		while(f < c) {
 			c=c/2;
 			oct--;
-		}
-	
 	}
 
-	//find note below frequency
-	//c=middle C
-	r=c*root2;
-	while(f > r) {
-		c=c*root2;
-		r=r*root2;
-		note++;
 	}
+
 	// frequency = note2 * 2^oct
 	// only works for notes > 2nd octave to save two shifts
-	int nearest_note_freq = (int)( note_freq[note] * (1 << (oct - 2)) );
-	int cents_error = (int)(1200 * log(f / nearest_note_freq) / 0.693147180);
-
-	xil_printf("frequency: %d\r\nnearest: %d\r\n", (int)(f), nearest_note_freq);
+	int nearest_note_freq = 0;
+	int cents_error = 0;
+	nearest_note_freq = (int)( note_freq[note] * (1 << (oct - 2)) );
+	cents_error = (int)(1200 * log(f / nearest_note_freq) / 0.693147180); // / ln(2)
+	xil_printf("frequency: %d\r\nnearest: %d\r\nnoct: %d\r\n", (int)(f), nearest_note_freq, oct);
 	printShape(116, 102, 16, 32, &triangle);
 	char * cents = "";
 	itoa(cents_error, cents, 10);
 	lcdPrint(cents, 116, 102);
 
-
-	//determine which note frequency is closest to
-	if((f-c) <= (r-f)) { //closer to left note
-	/*	WriteString(N:");
-		WriteString(notes[note]);
-		WriteInt(oct);
-
-		WriteString(" D:+");
-		WriteInt((int)(f-c+.5));
-		WriteString("Hz");*/
-	}
-	else { //f closer to right note
-		note++;
-		if(note >=12) note=0;
-		/*WriteString("N:");
-		WriteString(notes[note]);
-		WriteInt(oct);
-		WriteString(" D:-");
-		WriteInt((int)(r-f+.5));
-		WriteString("Hz");*/
-	}
 	char * str = "";
 	int print_oct = 9;
 	if (oct >= 2 && oct <= 7)
@@ -107,5 +88,4 @@ void findNote(float f) {
 	{
 		printShape(116, 120, 16, 16, &triangle);
 	}
-
 }

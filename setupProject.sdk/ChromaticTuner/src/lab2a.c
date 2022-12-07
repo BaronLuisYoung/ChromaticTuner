@@ -9,9 +9,14 @@
 #include "bsp.h"
 #include "lab2a.h"
 #include "lcd.h"
+#include "fft.h"
 #include "xtmrctr.h"
 #include <stdlib.h> // itoa
 #include "lcd.h"
+#include "xintc.h"
+
+float screenValues[64];
+
 int returnOne() {
 	return 2;
 }
@@ -316,6 +321,7 @@ QState histogram(tuner *me) {
 	case Q_ENTRY_SIG:
 	{
 		me->state = 4;
+		runOnce = 0;
 		xil_printf("enter - histogram\r\n");
 		return Q_HANDLED();
 	}
@@ -329,7 +335,14 @@ QState histogram(tuner *me) {
 	}
 	case ENCODER_CLICK:
 	{
+		runOnce = 0;
+		xil_printf("exit - histogram\r\n");
+		for(int i = 0; i < 128; i+=2)
+		{
+			//printShape(0, i+40, (int)new_[i]>>2, 1, &triangle);
+		}
 		return Q_TRAN(&main_menu);
+
 	}
 
 	}
